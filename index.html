@@ -28,16 +28,16 @@
 
     <script>
         function launch() {
-            const input = document.getElementById('urlInput').value.trim();
-            const frame = document.getElementById('viewer');
-            const status = document.getElementById('status');
+    const input = document.getElementById('urlInput').value.trim();
+    if (!input) return;
 
-            if (!input) return;
-
-            // 1. Format the URL correctly
-            const url = input.startsWith('http') ? input : 'https://' + input;
-            
-            status.innerText = "Connecting to cloud bridge...";
+    const url = input.startsWith('http') ? input : 'https://' + input;
+    
+    // Updated Secret Code: Using CodeTabs bridge
+    const proxyUrl = "https://api.codetabs.com/v1/proxy?quest=" + encodeURIComponent(url);
+    
+    document.getElementById('viewer').src = proxyUrl;
+}
             
             // 2. THE SECRET CODE: AllOrigins Bridge
             // This grabs the site's code through a "bridge" to bypass most blocks.
