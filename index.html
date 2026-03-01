@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloud Desktop Browser</title>
+    <style>
+        /* This CSS makes it look like a real browser on your other device */
+        body { font-family: -apple-system, sans-serif; margin: 0; background: #0f172a; color: white; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+        #toolbar { padding: 12px; background: #1e293b; display: flex; gap: 10px; align-items: center; border-bottom: 1px solid #334155; }
+        input { flex-grow: 1; padding: 10px 15px; border-radius: 8px; border: 1px solid #475569; background: #0f172a; color: white; outline: none; }
+        button { padding: 10px 20px; cursor: pointer; border-radius: 8px; background: #3b82f6; color: white; border: none; font-weight: bold; transition: 0.2s; }
+        button:hover { background: #2563eb; }
+        #status { font-size: 12px; color: #94a3b8; position: absolute; bottom: 10px; right: 10px; }
+        iframe { flex-grow: 1; border: none; background: white; width: 100%; }
+    </style>
+</head>
+<body>
+
+    <div id="toolbar">
+        <div style="font-weight: bold; margin-right: 10px;">☁️ Browser</div>
+        <input type="text" id="urlInput" placeholder="Enter URL (e.g. google.com or neal.fun)" onkeypress="if(event.key==='Enter') launch()">
+        <button onclick="launch()">Launch</button>
+    </div>
+
+    <iframe id="viewer" src="about:blank"></iframe>
+    <div id="status">Ready</div>
+
+    <script>
+        function launch() {
+            const input = document.getElementById('urlInput').value.trim();
+            const frame = document.getElementById('viewer');
+            const status = document.getElementById('status');
+
+            if (!input) return;
+
+            // 1. Format the URL correctly
+            const url = input.startsWith('http') ? input : 'https://' + input;
+            
+            status.innerText = "Connecting to cloud bridge...";
+            
+            // 2. THE SECRET CODE: AllOrigins Bridge
+            // This grabs the site's code through a "bridge" to bypass most blocks.
+            const proxyUrl = "https://api.allorigins.win/raw?url=" + encodeURIComponent(url);
+            
+            // 3. Load the site into the viewer
+            frame.src = proxyUrl;
+
+            frame.onload = () => {
+                status.innerText = "Viewing: " + url;
+            };
+        }
+    </script>
+</body>
+</html>
